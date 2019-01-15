@@ -1,0 +1,63 @@
+@import 'jquery.scrollbar';
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.scrollbar-dynamic {
+    max-height: 500px;
+    overflow: auto;
+}
+
+.glyphicon-refresh-animate {
+    animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+    to {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spinw {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes spinm {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+.alphabet-filter {
+    & > li {
+        & > a {
+            border-radius: 0 !important;
+            padding: 6px 9px;
+        }
+    }
+}
+
+.loading {
+    background: url(../images/loader.gif) no-repeat center center; background-size: 64px;
+    min-height: 90vh;
+}
+
+.loading > * {
+    display: none;
+}
+
+#filters li, #pagination li {
+    cursor: pointer !important;
+}

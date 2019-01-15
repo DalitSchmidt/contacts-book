@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+
+    <title>Contact List</title>
+
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+
+<body>
+    <div class="global-wrapper" ng-app="ContactBook">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="nav-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="text-center text-uppercase" href="#/all"><span class="glyphicon glyphicon-list"></span> Contacts</a></li>
+                        <li><a class="text-center text-uppercase" href="#/add"><span class="glyphicon glyphicon-plus-sign"></span> Add New</a></li>
+                        <li><a class="text-center text-uppercase" href="#/insights"><span class="glyphicon glyphicon-signal"></span> Insights</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="main" class="container loading" ng-controller="MainController">
+            <!-- This output is just for you to see the filters changes -->
+            <pre>{{ filter }}</pre>
+
+            <div class="row">
+                <div class="col-xs-5 panel-body">
+                    <div ng-controller="SearchController">
+                        <input class="form-control" placeholder="Search" type="text" ng-model="filter.searchterm" ng-model-options="{ debounce: 200 }">
+
+                        <nav id="filters" ng-show="filter.mode != 'search'">
+                            <ul class="pagination" style="margin-bottom: 5px;">
+                                <li class="page-item" ng-class="{'active': filter.mode == 'all'}">
+                                    <a ng-href="#/all" ng-click="setFilter(['mode'], ['all'])" class="page-link">All</a>
+                                </li>
+                                <li class="page-item" ng-class="{'active': filter.mode == 'alphabet'}">
+                                    <a ng-href="#/alphabet/{{filter.letter}}" class="page-link">Alphabet</a>
+                                </li>
+                            </ul>
+
+                            <ul class="pagination" style="margin-bottom: 5px;" ng-show="filter.mode != 'search'">
+                                <li class="page-item" ng-class="{'active': filter.order == 'asc' && filter.by == 'createdAt' }">
+                                    <a ng-click="setFilter(['by', 'order'], ['createdAt', 'asc'])" class="page-link"><span class="glyphicon glyphicon-chevron-up"></span> Created</a>
+                                </li>
+                                <li class="page-item" ng-class="{'active': filter.order == 'desc' && filter.by == 'createdAt'}">
+                                    <a ng-click="setFilter(['by', 'order'], ['createdAt', 'desc'])" class="page-link"><span class="glyphicon glyphicon-chevron-down"></span> Created</a>
+                                </li>
+                            </ul>
+
+                            <ul class="pagination" style="margin-top: 0;" ng-show="filter.mode == 'all'">
+                                <li class="page-item" ng-class="{'active': filter.order == 'asc' && filter.by == 'firstname'}">
+                                    <a ng-href="#/all" ng-click="setFilter(['by', 'order'], ['firstname', 'asc'])" class="page-link"><span class="glyphicon glyphicon-chevron-up"></span> Name</a>
+                                </li>
+                                <li class="page-item" ng-class="{'active': filter.order == 'desc' && filter.by == 'firstname'}">
+                                    <a ng-click="setFilter(['by', 'order'], ['firstname', 'desc'])" class="page-link"><span class="glyphicon glyphicon-chevron-down"></span> Name</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div ng-show="filter.mode == 'search'">
+                            <h3><span class="glyphicon glyphicon-remove" style="font-size: 0.75em; cursor: pointer" ng-click="reset()"></span> Search results for: '<span ng-bind="filter.searchterm"></span>'</h3>
+                        </div>
+
+                        <nav ng-show="filter.mode == 'alphabet'">
+                            <ul class="pagination alphabet-filter">
+                                <li class="page-item" ng-class="{'active': filter.letter == letter }" ng-repeat="letter in letterArray">
+                                    <a class="page-link" ng-href="/#/alphabet/{{letter}}" ng-bind="letter"></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div ng-show="contacts.length === 0"><h3>No Results</h3></div>
+
+                    <div class="scrollbar-dynamic" data-jquery-scrollbar="jqueryScrollbarOptions">
+                        <contact class="list-group-item" ng-class="{'active': contact.id == currentContact.id}" ng-repeat="contact in contacts"></contact>
+                    </div>
+
+                    <nav ng-controller="PaginationController" id="pagination">
+                        <ul class="pagination">
+                            <li ng-class="{'active': $index + 1 == filter.page }" class="page-item"  ng-repeat="i in getPages(results.pages) track by $index">
+                                <a class="page-link" ng-click="page($index + 1)" ng-bind="$index + 1"></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-xs-7">
+                    <div class="list-group panel-body">
+                        <div ng-view></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Vendors -->
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false" async></script>
+    <script src="application/vendor/underscore-min.js"></script>
+    <script src="application/vendor/jquery.js"></script>
+    <script src="application/vendor/angular-1.4.9.js"></script>
+    <script src="application/vendor/angular-route.min.js"></script>
+    <script src="application/vendor/jquery.scrollbar.js"></script>
+    <script src="application/vendor/ng-google-chart.js"></script>
+
+    <script src="application/app.min.js"></script>
+
+     <!-- Load Google Places -->
+    <script src="http://www.google.com/jsapi"></script>
+    <script src="http://www.gstatic.com/charts/loader.js"></script>
+    <script>google.load('visualization', '1.0', { 'packages': ['corechart'] });</script>
+</body>
+</html>

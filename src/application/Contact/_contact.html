@@ -1,0 +1,10 @@
+<div class="list-group-item">
+    <h3 class="text-center"><span class="glyphicon glyphicon-user"></span> <span ng-bind="currentContact.firstname"></span> <span ng-bind="currentContact.lastname"></span></h3>
+    <p><span class="glyphicon glyphicon-envelope"></span> Email: <a ng-href="mailto:{{currentContact.email}}" ng-bind="currentContact.email"></a></p>
+    <p><span class="glyphicon glyphicon-phone"></span> Phone: <a ng-href="tel:{{currentContact.phone}}" ng-bind="currentContact.phone"></a></p>
+    <p><span class="glyphicon glyphicon-map-marker"></span> Address: <a ng-href="https://www.google.co.il/maps/place/{{currentContact.address}}" target="_blank" ng-bind="currentContact.address"></a></p>
+
+    <button class="btn btn-danger" ng-click="removeContact( currentContact )">
+        <span class="glyphicon glyphicon-remove"></span><span> Remove</span>
+    </button>
+</div>

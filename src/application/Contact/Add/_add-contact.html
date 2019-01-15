@@ -1,0 +1,42 @@
+<div>
+    <div class="list-group-item">
+        <h2 class="text-uppercase"><span class="glyphicon glyphicon-plus-sign" style="font-size: .8em"></span> Add new contact</h2>
+        <form action="/" method="POST" ng-submit="submitForm($event, contactForm.$valid)" name="contactForm" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.firstname.$invalid && !contactForm.firstname.$pristine }">
+                <label for="firstname">First Name:</label>
+                <input id="firstname" name="firstname" placeholder="Enter a name (one word with capital letter, e.g. John)" ng-pattern="/^[A-Z][a-z]{1,10}$/" class="form-control" type="text" ng-model="currentContact.firstname" required="required">
+                <p ng-show="contactForm.firstname.$invalid && !contactForm.firstname.$pristine" class="help-block">First name is required (at least 2 words with capital letter)</p>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.lastname.$invalid && !contactForm.lastname.$pristine }">
+                <label for="lastname">Last Name:</label>
+                <input id="lastname" name="lastname" placeholder="Enter a name (one word with capital letter, e.g. John)" ng-pattern="/^[A-Z][a-z]{1,10}$/" class="form-control" type="text" ng-model="currentContact.lastname" required="required">
+                <p ng-show="contactForm.lastname.$invalid && !contactForm.lastname.$pristine" class="help-block">Last name is required (at least 2 words with capital letter)</p>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.email.$invalid && !contactForm.email.$pristine }">
+                <label for="email">Email:</label>
+                <input id="email" name="email" placeholder="Enter an email (e.g. foo@bar.com)" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" type="email" ng-model="currentContact.email" required="required"> <p ng-show="contactForm.email.$invalid && !contactForm.email.$pristine" class="help-block">Email is invalid (e.g. foo@bar.com)</p>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.phone.$invalid && !contactForm.phone.$pristine }">
+                <label for="phone">Phone:</label>
+                <input id="phone" name="phone" placeholder="Enter a phone (e.g. 0528-294-080)" ng-pattern="/^[0-9]{7,10}$/" class="form-control" type="tel" ng-model="currentContact.phone" required="required"></p>
+                <p ng-show="contactForm.phone.$invalid && !contactForm.phone.$pristine" class="help-block">Phone is invalid (e.g. 0528-294-080)</p>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.address.$invalid && !contactForm.address.$pristine }">
+                <label for="address">Address (Restricted only for United States):</label>
+                <input id="address" name="address" class="form-control" type="text" ng-model="currentContact.address" required="required" googleplace>
+                <p ng-show="contactForm.address.$invalid && !contactForm.address.$pristine" class="help-block">Must fill address</p>
+            </div>
+
+            <button class="btn btn-success" ng-disabled="contactForm.$invalid">
+                <span class="glyphicon glyphicon-user" ng-class="proccessing ? 'glyphicon-refresh glyphicon-refresh-animate' : 'glyphicon-ok'"></span>
+                <span> Add</span>
+            </button>
+
+            <a href="/#/">
+                <button class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span><span> Cancel</span>
+                </button>
+            </a>
+        </form>
+    </div>
+</div>
